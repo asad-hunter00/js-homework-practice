@@ -1,12 +1,11 @@
 // 1
 
 const greet = (name) => {
-    return `Salom ${name} JavaScript-ga xush kelibsiz.`
-
-
+    return `Salom ${name} Javascriptga xush kelibsiz!`
 }
 
 console.log(greet("Asadbek"));
+
 
 
 
