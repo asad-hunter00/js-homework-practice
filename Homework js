@@ -1,0 +1,149 @@
+// 1️⃣ Sizda users arrayi bor. Yoshi 18 va undan katta bo'lgan birinchi foydalanuvchini find yordamida toping.
+
+const users = [
+  { name: "Ali", age: 15 },
+  { name: "Sarvar", age: 22 },
+  { name: "Nodira", age: 19 }
+];
+
+const user = users.find(user => user.age >= 18);
+
+console.log(user);
+
+
+// 2️⃣ products arrayini filtrlang va narxi 50,000 so'mdan yuqori bo'lgan mahsulotlarni qaytaring. Har bir mahsulot nomi va narxini template literal yordamida chiqaring.
+
+const products1 = [
+  { name: "Daftar", price: 3000 },
+  { name: "Telefon", price: 1500000 },
+  { name: "Qalam", price: 1500 },
+  { name: "Noutbuk", price: 8000000 }
+];
+
+const expensiveProducts = products1.filter(product => product.price > 50000);
+
+expensiveProducts.forEach(product => {
+  console.log(`${product.name} - ${product.price} so'm`);
+});
+
+
+// 3️⃣ Sizda ism va familiyalar arrayi bor. map va destructuring yordamida "Assalomu alaykum, Jasur Karimov!" chiqaring.
+
+const people = [
+  { firstName: "Jasur", lastName: "Karimov" },
+  { firstName: "Malika", lastName: "Tosheva" },
+  { firstName: "Bobur", lastName: "Yusupov" }
+];
+
+people.map(({ firstName, lastName }) => {
+  console.log(`Assalomu alaykum, ${firstName} ${lastName}!`);
+});
+
+
+// 4️⃣ findById(products, id) funksiyasini yarating. Bu funksiya find yordamida id bo'yicha mahsulotni topadi. Topilsa, mahsulot ma'lumotlarini template literal bilan chiqaring. Topilmasa, topilmadi xabarini chiqaring.
+
+const products2 = [
+  { id: 1, name: "Monitor", price: 2500000 },
+  { id: 2, name: "Klaviatura", price: 150000 },
+  { id: 3, name: "Sichqoncha", price: 80000 }
+];
+
+function findById(products, id) {
+  const product = products.find(product => product.id === id);
+
+  if (product) {
+    console.log(`${product.name} - ${product.price} so'm`);
+  } else {
+    console.log("Mahsulot topilmadi");
+  }
+}
+
+findById(products2, 2);
+
+
+// 5️⃣ Faol (isActive: true) va bahosi 70 dan yuqori bo'lgan talabalarni filtrlang.
+
+const students = [
+  { name: "Zulfiya", grade: 85, isActive: true },
+  { name: "Kamol", grade: 60, isActive: true },
+  { name: "Dildora", grade: 90, isActive: false },
+  { name: "Sherzod", grade: 75, isActive: true }
+];
+
+const activeStudents = students.filter(
+  student => student.isActive && student.grade > 70
+);
+
+console.log(activeStudents);
+
+
+// 6️⃣ Sizda blog postlari ro'yxati bor. map yordamida HTML ga shu postlarni card lar ko'rinishida chiqaring.
+
+const posts = [
+  { title: "React nima?", author: "Jasur", date: "2024-01-15" },
+  { title: "JS asoslari", author: "Malika", date: "2024-02-20" },
+  { title: "Array metodlari", author: "Bobur", date: "2024-03-10" }
+];
+
+const cards = posts.map(post => `
+<div class="card">
+  <h2>${post.title}</h2>
+  <p>${post.author}</p>
+  <span>${post.date}</span>
+</div>
+`);
+
+console.log(cards.join(""));
+
+
+// 7️⃣ map yordamida har bir mahsulotda asl narx va chegirma narxi (20% chegirma) bo'lgan yangi array yarating. Yangi arraydagi obyektlarga discountedPrice property qo'shiladi.
+
+const products3 = [
+  { name: "Kamera", price: 3000000 },
+  { name: "Quloqchin", price: 500000 },
+  { name: "Soat", price: 1200000 }
+];
+
+const discountedProducts = products3.map(product => ({
+  ...product,
+  discountedPrice: product.price * 0.8
+}));
+
+console.log(discountedProducts);
+
+
+// 8️⃣ products arrayidan filter yordamida category si "meva" ga teng bo'lgan va narxi 3000 dan qimmat bo'lganlarini yig'ib oling.
+
+const products4 = [
+  { name: "Olma", category: "meva", price: 5000 },
+  { name: "Noutbuk", category: "texnika", price: 8000000 },
+  { name: "Banan", category: "meva", price: 7000 },
+  { name: "Telefon", category: "texnika", price: 3000000 },
+  { name: "Gilos", category: "meva", price: 3000 }
+];
+
+const fruits = products4.filter(
+  product => product.category === "meva" && product.price > 3000
+);
+
+console.log(fruits);
+
+
+// 9️⃣ capitalizeLetters nomli funksiya yozing, ushbu funksiya letters degan array olsin, arraydagi har bitta so'zning faqat bosh harfini katta qilsin.
+
+function capitalizeLetters(letters) {
+  return letters.map(
+    word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  );
+}
+
+console.log(capitalizeLetters(["jasur", "malika", "bobur"]));
+
+
+// 🔟 nameLengths nomli funksiya yozing. Berilgan names arraydagi ismlarning uzunligini boshqa arrayda qaytarsin.
+
+function nameLengths(names) {
+  return names.map(name => name.length);
+}
+
+console.log(nameLengths(["John", "Alice", "Bob", "Eve"]));
