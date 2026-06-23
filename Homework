@@ -1,0 +1,225 @@
+index.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Contact Manager</h1>
+
+    <form id="form">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="phone" placeholder="Phone" required>
+        <input type="text" id="company" placeholder="Company" required>
+
+        <button>Add Contact</button>
+    </form>
+
+    <div id="cards"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+```
+
+style.css
+
+```css
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+}
+
+form{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:20px 0;
+}
+
+input{
+    padding:10px;
+}
+
+button{
+    padding:10px;
+    cursor:pointer;
+}
+
+#cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+}
+
+.actions{
+    margin-top:10px;
+    display:flex;
+    gap:10px;
+}
+```
+
+app.js
+
+```js
+const API = "https://6a3699be766b831960f9638e.mockapi.io/contacts"
+
+const cards = document.getElementById("cards")
+const form = document.getElementById("form")
+
+const nameInput = document.getElementById("name")
+const emailInput = document.getElementById("email")
+const phoneInput = document.getElementById("phone")
+const companyInput = document.getElementById("company")
+
+let editId = null
+
+function getContacts(){
+
+    fetch(API)
+    .then(function(res){
+        return res.json()
+    })
+    .then(function(data){
+
+        cards.innerHTML = ""
+
+        data.forEach(function(item){
+
+            cards.innerHTML += `
+            <div class="card">
+                <h3>${item.name}</h3>
+                <p>${item.email}</p>
+                <p>${item.phone}</p>
+                <p>${item.company}</p>
+
+                <div class="actions">
+
+                    <button onclick="favoriteContact('${item.id}', ${item.isFavorite})">
+                        ${item.isFavorite ? "⭐" : "☆"}
+                    </button>
+
+                    <button onclick="editContact('${item.id}')">
+                        Edit
+                    </button>
+
+                    <button onclick="deleteContact('${item.id}')">
+                        Delete
+                    </button>
+
+                </div>
+            </div>
+            `
+        })
+    })
+}
+
+form.addEventListener("submit", function(e){
+
+    e.preventDefault()
+
+    let contact = {
+        name: nameInput.value,
+        email: emailInput.value,
+        phone: phoneInput.value,
+        company: companyInput.value,
+        avatar: "",
+        isFavorite: false
+    }
+
+    if(editId){
+
+        fetch(API + "/" + editId,{
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(contact)
+        })
+        .then(function(){
+            getContacts()
+        })
+
+        editId = null
+
+    }else{
+
+        fetch(API,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(contact)
+        })
+        .then(function(){
+            getContacts()
+        })
+
+    }
+
+    form.reset()
+})
+
+function deleteContact(id){
+
+    fetch(API + "/" + id,{
+        method:"DELETE"
+    })
+    .then(function(){
+        getContacts()
+    })
+}
+
+function favoriteContact(id,favorite){
+
+    fetch(API + "/" + id,{
+        method:"PATCH",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            isFavorite: !favorite
+        })
+    })
+    .then(function(){
+        getContacts()
+    })
+}
+
+function editContact(id){
+
+    fetch(API + "/" + id)
+    .then(function(res){
+        return res.json()
+    })
+    .then(function(data){
+
+        nameInput.value = data.name
+        emailInput.value = data.email
+        phoneInput.value = data.phone
+        companyInput.value = data.company
+
+        editId = data.id
+    })
+}
+
+getContacts()
+```
