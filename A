@@ -1,0 +1,80 @@
+Show more10:24Claude responded: Kodni tushuntiraman 🧑‍💻Kodni tushuntiraman 🧑‍💻
+Bu kod — Product Management (Mahsulotlarni boshqarish) dasturi. CRUD operatsiyalarini bajaradi: Create, Read, Update, Delete.
+
+1. O'zgaruvchilar
+javascriptconst api = "https://6a3699be766b831960f9638e.mockapi.io/products";
+
+Bu — MockAPI manzili. Ma'lumotlar shu serverda saqlanadi.
+
+javascriptlet cur = null
+
+Hozir tahrirlayotgan mahsulot ID si. Agar null bo'lsa — yangi mahsulot qo'shiladi, aks holda — mavjudi yangilanadi.
+
+
+2. Modal oyna (popup)
+javascriptaddBtn.onclick = () => modalBg.classList.add("show");
+closeBtn.onclick = () => modalBg.classList.remove("show");
+cancelBtn.onclick = () => modalBg.classList.remove("show");
+
+Add tugmasi → modalni ochadi
+Close / Cancel → modalni yopadi
+
+
+3. getProducts() — Mahsulotlarni olish
+javascriptasync function getProducts() {
+    const res = await fetch(api)       // serverga so'rov
+    const data = await res.json();     // JSON ga aylantirish
+
+    grid.innerHTML = "";               // eski kartochkalarni tozalash
+
+    data.forEach(item => {
+        grid.innerHTML += `...`        // har bir mahsulot uchun karta chizish
+    });
+}
+Vazifasi: Serverdan barcha mahsulotlarni olib, ekranga karta ko'rinishida chiqaradi.
+
+4. saveBtn.onclick — Saqlash
+javascriptif (cur) {
+    // PUT — mavjud mahsulotni YANGILASH
+    await fetch(`${api}/${cur}`, { method: "PUT", ... });
+    cur = null;
+} else {
+    // POST — yangi mahsulot QO'SHISH
+    await fetch(api, { method: "POST", ... });
+}
+
+cur bo'lsa → tahrirlash (PUT)
+cur bo'lmasa → yangi qo'shish (POST)
+Keyin forma tozalanadi, modal yopiladi, mahsulotlar yangilanadi
+
+
+5. deleteProduct(id) — O'chirish
+javascriptasync function deleteProduct(id) {
+    await fetch(`${api}/${id}`, { method: "DELETE" });
+    getProducts(); // ro'yxatni yangilash
+}
+Tanlangan mahsulotni serverdan o'chirib, ro'yxatni qayta yuklaydi.
+
+6. editProduct(id) — Tahrirlash
+javascriptasync function editProduct(id) {
+    const res = await fetch(`${api}/${id}`);  // faqat shu mahsulotni olish
+    const data = await res.json();
+
+    cur = id;                    // qaysi mahsulot ekanligini eslab qolish
+
+    fName.value = data.name;     // formani to'ldirish
+    fCategory.value = data.category;
+    // ...
+
+    modalBg.classList.add("show"); // modalni ochish
+}
+Mahsulot ma'lumotlarini formaga solib, modalni ochadi. Save bosilganda cur orqali qaysi mahsulot ekanini bilib yangilaydi.
+
+Umumiy sxema
+Sahifa ochiladi
+      ↓
+getProducts() → API → Kartochkalar chiqadi
+      ↓
+[Add]  →  forma bo'sh  →  POST  →  yangi mahsulot
+[Edit] →  forma to'liq →  PUT   →  mavjud yangilanadi  
+[Delete] →  DELETE  →  o'chiriladi
