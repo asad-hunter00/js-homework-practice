@@ -151,6 +151,8 @@ async function deleteData(id) {
 }
 
 
+
+
 async function editData(id) {
     let res = await fetch(`${API_LINK}/${id}`)
     let data = await res.json()
