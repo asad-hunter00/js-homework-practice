@@ -1,0 +1,107 @@
+sort by
+    
+    
+    if (sort.value == "title") {
+        filtered.sort(function (a, b) {
+            return a.title.localeCompare(b.title);
+        });
+    }
+
+    if (sort.value == "year-desc") {
+        filtered.sort(function (a, b) {
+            return b.year - a.year;
+        });
+    }
+
+    if (sort.value == "year-asc") {
+        filtered.sort(function (a, b) {
+            return a.year - b.year;
+        });
+    }
+
+
+
+
+
+
+    search.oninput = filterMovies;
+genre.onchange = filterMovies;
+sort.onchange = filterMovies;
+
+
+ 3 movies
+counter.textContent = filtered.length + " movies";
+
+
+
+
+3. Delete confirmation
+
+deleteMovie() ni almashtir:
+
+async function deleteMovie(id) {
+
+    let check = confirm("Delete this movie?");
+
+    if (!check) return;
+
+    await fetch(`${API_LINK}/${id}`, {
+        method: "DELETE"
+    });
+
+    getMovie();
+}
+
+
+
+
+4. Validation
+
+addMovie() boshiga:
+
+if (
+    fTitle.value.trim() === "" ||
+    fYear.value.trim() === "" ||
+    fRating.value.trim() === ""
+) {
+    alert("Please fill all fields");
+    return;
+}
+
+Natija:
+
+title bo'sh bo'lsa qo'shilmaydi
+year bo'sh bo'lsa qo'shilmaydi
+rating bo'sh bo'lsa qo'shilmaydi
+
+
+
+
+
+editMovie() ichida:
+
+modalTitle.textContent = "Edit Movie";
+
+
+
+
+
+
+async function getMovie() {
+
+    const res = await fetch(API_LINK);
+    movies = await res.json();
+
+    all.textContent = movies.length;
+
+    plan.textContent =
+        movies.filter(item => item.status === "Plan to Watch").length;
+
+    watch.textContent =
+        movies.filter(item => item.status === "Watching").length;
+
+    done.textContent =
+        movies.filter(item => item.status === "Watched").length;
+
+    filterMovies();
+}
