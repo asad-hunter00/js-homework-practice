@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
     <header>
         <div class="logo">
             <span>My Collection</span>
@@ -32,36 +31,33 @@
     </header>
 
     <div class="layout">
-
         <aside id="sidebar">
             <input type="text" id="search" placeholder="Search title...">
             <div class="content">
                 <h5>STATUS</h5>
                 <div class="item active">
                     <span>All Movies</span>
-                    <span class="count">0</span>
+                    <span class="count" id="all">0</span>
                 </div>
+
                 <div class="item">
                     <span>Plan to Watch</span>
-                    <span class="count">0</span>
+                    <span class="count" id="plan">0</span>
                 </div>
+
                 <div class="item">
                     <span>Watching</span>
-                    <span class="count">0</span>
+                    <span class="count" id="watch">0</span>
                 </div>
+
                 <div class="item">
                     <span>Watched</span>
-                    <span class="count">0</span>
+                    <span class="count" id="done">0</span>
                 </div>
             </div>
-
             <hr>
-
             <div class="section">
                 <h5>GENRE</h5>
-
-
-                
                 <select id="genre">
                     <option value="all">All genres</option>
                     <option value="Action">Action</option>
@@ -75,7 +71,6 @@
                     <option value="Romance">Romance</option>
                 </select>
             </div>
-
             <button id="add-btn">+ Add Movie</button>
         </aside>
 
@@ -84,13 +79,15 @@
                 <span id="counter">0 movies</span>
                 <select id="sort">
                     <option value="">Sort by</option>
-                    <option value="title">Title A–Z</option>
+                    <option value="title">Title A-Z</option>
                     <option value="year-desc">Year (newest)</option>
                     <option value="year-asc">Year (oldest)</option>
                     <option value="rating-desc">Rating (high)</option>
                     <option value="rating-asc">Rating (low)</option>
                 </select>
             </div>
+
+
 
             <div class="table-head">
                 <span>TITLE</span>
@@ -100,16 +97,18 @@
                 <span>STATUS</span>
             </div>
 
+
+
             <div id="list"></div>
         </main>
+
 
     </div>
 
     <div class="overlay hidden" id="overlay">
         <div class="modal">
-            <button class="modal-close" onclick="closeModal()">✕</button>
+            <button class="modal-close">x</button>
             <div class="modal-title" id="modal-title">Add Movie</div>
-
             <div class="field">
                 <label>Title</label>
                 <input type="text" id="f-title" placeholder="Write Movie Name...">
@@ -135,14 +134,10 @@
                 </div>
             </div>
             <div class="field-row">
-
                 <div class="field">
-                    <label>Rating (1–10)</label>
+                    <label>Rating (1-10)</label>
                     <input type="number" id="f-rating" placeholder="8" min="1" max="10" step="0.1">
                 </div>
-
-
-
                 <div class="field">
                     <label>Status</label>
                     <select id="f-status">
@@ -154,19 +149,19 @@
             </div>
             <div class="field">
                 <label>Poster URL (optional)</label>
-                <input type="text" id="f-poster" placeholder="https://...">
+                <input type="text" id="f-poster" placeholder="URL://..">
             </div>
             <div class="field">
-                <label>Notes</label>
-                <textarea id="f-notes" placeholder="Short note..."></textarea>
+                <label>Comment</label>
+                <textarea id="f-notes" placeholder="Your Comment"></textarea>
             </div>
-
             <div class="modal-actions">
                 <button class="btn-cancel">Cancel</button>
                 <button class="btn-save" id="btn-save" onclick="addMovie()">Add Movie</button>
             </div>
         </div>
     </div>
+
 
     <script src="./main.js"></script>
 </body>

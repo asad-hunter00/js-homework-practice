@@ -14,6 +14,10 @@ const modalTitle = document.getElementById("modal-title");
 const btnSave = document.getElementById("btn-save");
 const fTitle = document.getElementById("f-title");
 const fGenre = document.getElementById("f-genre");
+const all = document.getElementById("all");
+const plan = document.getElementById("plan");
+const watch = document.getElementById("watch");
+const done = document.getElementById("done");
 const fYear = document.getElementById("f-year");
 const fRating = document.getElementById("f-rating");
 const fStatus = document.getElementById("f-status");
@@ -55,6 +59,10 @@ async function getMovie() {
     movies = await res.json();
 
 
+
+
+
+    
     console.log(movies);
 
     filterMovies();
@@ -64,19 +72,37 @@ async function getMovie() {
 function getHtml(data) {
     list.innerHTML = "";
 
+
+    if (data.length === 0) {
+        list.innerHTML = `
+        <p>Movie not found</p>
+        `
+    }
+
     data.forEach(item => {
         list.innerHTML += `
 <div class="movie-row">
-    <span>${item.title}</span>
-    <span>${item.genre}</span>
-    <span>${item.year}</span>
-    <span>${item.rating}</span>
-    <span>${item.status}</span>
 
-    <div class="actions">
-        <button onclick="editMovie('${item.id}')">Edit</button>
-        <button onclick="deleteMovie('${item.id}')">Delete</button>
-    </div>
+    <img src="${item.poster}" class="poster">
+
+    <h3>${item.title}</h3>
+
+    <p>${item.genre}</p>
+
+    <p>${item.year}</p>
+
+    <p>${item.rating}</p>
+
+    <p>${item.status}</p>
+
+    <button onclick="editMovie('${item.id}')">
+        Edit
+    </button>
+
+    <button onclick="deleteMovie('${item.id}')">
+        Delete
+    </button>
+
 </div>
 `;
     });
@@ -108,6 +134,10 @@ function filterMovies() {
             item.status === currentStatus
         );
     }
+
+
+
+
 
 
 
@@ -214,5 +244,8 @@ navItems.forEach(item => {
 
 search.oninput = filterMovies;
 genre.onchange = filterMovies;
+
+
+
 
 getMovie()
